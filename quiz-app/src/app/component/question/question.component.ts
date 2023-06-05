@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Question} from '../../model/question';
 import {QuestionService} from '../../service/question.service';
 import Swal from 'sweetalert2';
-import {Router} from '@angular/router';
 
 
 @Component({
@@ -28,7 +27,24 @@ export class QuestionComponent implements OnInit {
     this.getStart();
   }
 
+  setDefaultData() {
+    this.questionService.resetListQuestionAnswered();
+    this.setDefaultAnswer();
+    this.setDefaultTime();
+    this.setDefaultCompletionTime();
+    this.setDefaultQuestionList();
+  }
+
+  setDefaultCompletionTime() {
+    this.totalCompletionTime = 0;
+  }
+
+  setDefaultQuestionList() {
+    this.listQuestion = [];
+  }
+
   async getStart() {
+    this.setDefaultData();
     this.closeModal();
     this.listQuestion = undefined;
     this.currentIndex = -1;
@@ -79,6 +95,7 @@ export class QuestionComponent implements OnInit {
       modal.style.display = 'block';
     }
   }
+
   closeModal() {
     const modal = document.getElementById('myModal');
     if (modal) {
@@ -125,6 +142,7 @@ export class QuestionComponent implements OnInit {
       this.stopCountdownTime();
       this.checkCorrectAnswer();
       this.setQuestionAnswered();
+      this.setDefaultAnswer();
       setTimeout(() => this.openModal(), 1000);
     } else {
       Swal.fire({
@@ -177,7 +195,7 @@ export class QuestionComponent implements OnInit {
   setQuestionAnswered() {
     const questionAnswered = {...this.currentQuestion, selectedAnswer: this.answer};
     this.questionService.addQuestionAnswered(questionAnswered);
-    console.log('set');
+    this.answer = undefined;
   }
 
   checkCorrectAnswer() {

@@ -45,7 +45,8 @@
 .question {
   font-size: 1.2em;
   text-align: center;
-  font-family: Bahnschrift, serif ;
+  font-family: Bahnschrift, serif;
+  word-break: break-word;
 }
 
 .loader {
